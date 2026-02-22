@@ -1,0 +1,13 @@
+plugins {
+    id 'java-library'
+    id 'io.spring.dependency-management'
+}
+
+dependencies {
+    api 'org.springframework:spring-context'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.locationtech.jts:jts-core:1.19.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}

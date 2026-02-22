@@ -1,0 +1,4 @@
+rootProject.name = 'weather-app'
+include 'geofence'
+include 'weather-api'
+include 'weather'
