@@ -4,7 +4,7 @@ import java.time.Instant;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public record WeatherDto(
+public record ForecastDto(
     @JsonIgnore
     double latitude,
     @JsonIgnore
