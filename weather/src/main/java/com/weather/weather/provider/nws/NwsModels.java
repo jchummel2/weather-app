@@ -16,6 +16,7 @@ public class NwsModels {
 
     public record Period(
         String name,
+        Boolean isDaytime,
         Integer temperature,
         String temperatureUnit,
         String windSpeed,

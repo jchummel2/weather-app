@@ -1,9 +1,6 @@
 package com.weather.weather.provider.nws;
 
 import java.time.Instant;
-import java.util.List;
-
-import org.mapstruct.factory.Mappers;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -61,12 +58,12 @@ public class NwsWeatherProvider implements WeatherProvider {
 
         var nwsPeriods = forecast.properties().periods();
 
-        int fromIndex = Math.min(1, nwsPeriods.size());
-        int toIndex = Math.min(7, nwsPeriods.size());
+        var daytimePeriods = nwsPeriods.stream()
+            .skip(1)
+            .limit(12)
+            .toList();
 
-        var wholeWeek = nwsPeriods.subList(fromIndex, toIndex);
-
-        var mapped = forecastMapper.toList(wholeWeek);
+        var mapped = forecastMapper.toList(daytimePeriods);
 
         var finalList = mapped.stream()
             .map(p -> new ForecastDto(
@@ -92,6 +89,7 @@ public class NwsWeatherProvider implements WeatherProvider {
 
     @Override
     public RelativeLocationDto location(double latitude, double longitude) {
+        // TODO jhummel2 coming later once forecast and current work 100%
         throw new UnsupportedOperationException("This doesn't work yet");
     }
 
