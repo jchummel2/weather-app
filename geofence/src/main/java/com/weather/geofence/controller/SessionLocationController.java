@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.weather.geofence.schema.LocationDto;
 import com.weather.geofence.service.SessionLocationStore;
 
+import jakarta.annotation.security.PermitAll;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,11 +21,13 @@ public class SessionLocationController {
     private final SessionLocationStore store;
 
     @PostMapping
+    @PermitAll 
     public SessionLocationStore.SessionInfo createSession() {
         return store.createSession();
     }
 
     @PostMapping("/location")
+    @PermitAll 
     public void saveMyLocation(
         @RequestHeader("X-Session-Token") String token,
         @RequestBody LocationDto dto
