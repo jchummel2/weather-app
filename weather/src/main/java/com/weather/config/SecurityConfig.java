@@ -25,9 +25,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .authorizeHttpRequests((authz) -> authz
-                .requestMatchers(HttpMethod.POST, "/v4/session/**").permitAll()
+                .requestMatchers("/v4/session/**").permitAll()
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/v4/weather/**").permitAll()
+                .requestMatchers("/v4/geofence/**").permitAll()
                 .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated()
             )

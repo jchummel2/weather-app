@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableAutoConfiguration
-@ComponentScan(basePackages = {"com.weather.config"})
+@ComponentScan(basePackages = {"com.weather"})
 public class WeatherAppApplication {
 
     public static void main(String[] args) {
