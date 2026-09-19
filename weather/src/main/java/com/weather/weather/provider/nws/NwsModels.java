@@ -7,7 +7,15 @@ public class NwsModels {
     private NwsModels() {}
 
     public record PointsResponse(Properties properties) {
-        public record Properties(String forecast, String forecastHourly) {}
+        public record Properties(
+            String forecast,
+            String forecastHourly,
+            RelativeLocation relativeLocation
+        ) {}
+    }
+
+    public record RelativeLocation(RelativeLocationProperties properties) {
+        public record RelativeLocationProperties(String city, String state) {}
     }
 
     public record ForecastResponse(Properties properties) {

@@ -89,8 +89,23 @@ public class NwsWeatherProvider implements WeatherProvider {
 
     @Override
     public RelativeLocationDto location(double latitude, double longitude) {
-        // TODO jhummel2 coming later once forecast and current work 100%
-        throw new UnsupportedOperationException("This doesn't work yet");
+        double lat = round4(latitude);
+        double lon = round4(longitude);
+
+        var points = PointsResponse(lat, lon);
+        var relativeLocation = points.properties().relativeLocation();
+
+        if (relativeLocation == null || relativeLocation.properties() == null) {
+            throw new IllegalStateException("Invalid relative location response from NWS");
+        }
+
+        return new RelativeLocationDto(
+            lat,
+            lon,
+            relativeLocation.properties().city(),
+            relativeLocation.properties().state(),
+            Instant.now()
+        );
     }
 
 
@@ -100,14 +115,7 @@ public class NwsWeatherProvider implements WeatherProvider {
 
 
     private NwsModels.ForecastResponse ForecastResponse(double lat, double lon) {
-        var points = restClient.get()
-            .uri("https://api.weather.gov/points/{lat},{lon}", lat, lon)
-            .retrieve()
-            .body(NwsModels.PointsResponse.class);
-
-        if (points == null || points.properties() == null ) {
-            throw new IllegalStateException("Invalid response from NWS");
-        }
+        var points = PointsResponse(lat, lon);
 
         String forecastUrl = points.properties().forecast();
         var forecast = restClient.get()
@@ -122,5 +130,18 @@ public class NwsWeatherProvider implements WeatherProvider {
         }
         
         return forecast;
+    }
+
+    private NwsModels.PointsResponse PointsResponse(double lat, double lon) {
+        var points = restClient.get()
+            .uri("https://api.weather.gov/points/{lat},{lon}", lat, lon)
+            .retrieve()
+            .body(NwsModels.PointsResponse.class);
+
+        if (points == null || points.properties() == null) {
+            throw new IllegalStateException("Invalid response from NWS");
+        }
+
+        return points;
     }
 }

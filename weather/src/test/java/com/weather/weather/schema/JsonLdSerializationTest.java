@@ -68,4 +68,26 @@ class JsonLdSerializationTest {
         assertEquals("WeatherForecast", json.at("/itemListElement/0/@type").asText());
         assertFalse(json.has("periods"));
     }
+
+    @Test
+    void serializesRelativeLocationWithCityStateAndRequestedCoordinates() throws Exception {
+        var location = new RelativeLocationDto(
+            38.8977,
+            -77.0365,
+            "Washington",
+            "DC",
+            Instant.parse("2026-09-19T12:00:00Z")
+        );
+
+        JsonNode json = objectMapper.readTree(objectMapper.writeValueAsString(location));
+
+        assertEquals("Place", json.get("@type").asText());
+        assertEquals("Washington, DC", json.get("name").asText());
+        assertEquals("Washington", json.at("/address/addressLocality").asText());
+        assertEquals("DC", json.at("/address/addressRegion").asText());
+        assertEquals(38.8977, json.at("/geo/latitude").asDouble());
+        assertEquals(-77.0365, json.at("/geo/longitude").asDouble());
+        assertFalse(json.has("city"));
+        assertFalse(json.has("state"));
+    }
 }
