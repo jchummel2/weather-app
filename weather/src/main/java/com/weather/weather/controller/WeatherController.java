@@ -19,19 +19,19 @@ public class WeatherController {
 
     private final WeatherService weatherService;
 
-    @GetMapping("/current")
+    @GetMapping(value = "/current", produces = "application/ld+json")
     public ForecastDto current(
         @RequestHeader("X-Session-Token") String token) {
         return weatherService.current(token);
     }
 
-    @GetMapping("/forecast")
+    @GetMapping(value = "/forecast", produces = "application/ld+json")
     public ForecastListDto forecast(
         @RequestHeader("X-Session-Token") String token) {
             return weatherService.forecast(token);
     }
 
-    @GetMapping("/location")
+    @GetMapping(value = "/location", produces = "application/ld+json")
     public RelativeLocationDto location(
         @RequestHeader("X-Session-Token") String token) {
         return weatherService.location(token);
